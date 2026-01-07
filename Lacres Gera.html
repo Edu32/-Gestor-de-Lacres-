@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Lacres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #004c99;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Gestão de Lacres</h2>
+
+    <label>Lacre Inicial</label>
+    <input type="text" id="inicio" placeholder="Ex: ABC0001">
+
+    <label>Lacre Final</label>
+    <input type="text" id="fim" placeholder="Ex: ABC0100">
+
+    <button onclick="gerarExcel()">Gerar Excel</button>
+</div>
+
+<script>
+function gerarExcel() {
+    const inicio = document.getElementById("inicio").value.trim();
+    const fim = document.getElementById("fim").value.trim();
+
+    if (!inicio || !fim) {
+        alert("Preencha os dois campos.");
+        return;
+    }
+
+    // Separa letras e números
+    const prefixo = inicio.match(/[A-Za-z]+/)[0];
+    const numInicio = parseInt(inicio.match(/\d+/)[0]);
+    const numFim = parseInt(fim.match(/\d+/)[0]);
+    const tamanhoNumero = inicio.match(/\d+/)[0].length;
+
+    if (numFim < numInicio) {
+        alert("O número final deve ser maior que o inicial.");
+        return;
+    }
+
+    let csv = "LACRE\n";
+
+    for (let i = numInicio; i <= numFim; i++) {
+        let numeroFormatado = i.toString().padStart(tamanhoNumero, "0");
+        csv += prefixo + numeroFormatado + "\n";
+    }
+
+    // Gera download do Excel (CSV)
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "sequencia_lacres.csv";
+    link.click();
+}
+</script>
+
+</body>
+</html>
