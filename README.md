@@ -1,5 +1,4 @@
-# -Gestor-de-Lacres-
-Projeto para gerenciamento, rastreamento e conciliação de lacres operacionais.
+
 
 # Gestor de Lacres 🔐
 
